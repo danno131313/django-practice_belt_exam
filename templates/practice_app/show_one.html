@@ -1,0 +1,29 @@
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width" />
+            <title>{{ user.first_name }}'s page</title>
+            {% load static %}
+            <link rel="stylesheet" href="{% static 'practice_app/css/main.css' %}" type="text/css" media="all" />
+        </head>
+        <body>
+            {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+            <h1>Name: {{ user.first_name }} {{ user.last_name }}</h1>
+            <h2>{{ user.first_name }}'s comments</h2>
+            {% for comment in user.recieved_comments.all %}
+                <p>{{ comment.content }} -- <a href="/users/{{ comment.poster.id }}/show">{{ comment.poster.first_name }} {{ comment.poster.last_name }}</a></p>
+            {% endfor %}
+            {% if user.id != request.session.id %}
+                <h3>Add a comment!</h3>
+                <form action="/users/{{ user.id }}/create_comment" method="post" accept-charset="utf-8">
+                    {% csrf_token %}
+                    <textarea name="comment" rows="8" cols="40"></textarea>
+                    <input type="submit" value="Submit" />
+                </form>
+            {% endif %}
+            <a href="/show" >Back to all users</a>
+        </body>
+    </html>

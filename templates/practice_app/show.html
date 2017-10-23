@@ -1,0 +1,30 @@
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width" />
+            <title>Show users</title>
+            {% load static %}
+            <link rel="stylesheet" href="{% static 'practice_app/css/main.css' %}" type="text/css" media="all" />
+        </head>
+        <body>
+            {% for message in messages %}
+                <p class={{ message.tags }}>{{ message }}</p>
+            {% endfor %}
+            <h1>Hello, {{ request.session.name }}! <a href="/logout" >Log out</a></h1>
+            <a href="/users/{{ request.session.id }}/show">Click here to see your messages!</a>
+            <h2>Other users</h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th># of comments</th>
+                </tr>
+                {% for user in users %}
+                    <tr>
+                        <td><a href="/users/{{ user.id }}/show">{{ user.first_name }} {{ user.last_name }}</a></td>
+                        <td>{{ user.recieved_comments.count }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </body>
+    </html>
